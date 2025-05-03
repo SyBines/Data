@@ -2,64 +2,45 @@ public class Data {
     public static final int MAX = (int)(Math.random() * Integer.MAX_VALUE);
     private int[][] grid;
 
-    public Data (int rows, int columns)
-    {
+    public Data(int rows, int columns) {
         grid = new int[rows][columns];
     }
 
-    public Data (int[][]arr)
-    {
+    public Data(int[][] arr) {
         grid = arr;
     }
 
-    public void repopulate(){
-        for (int row = 0; row < grid.length; row++){
-            for(int col = 0; row < grid[0].length; col++)
+    public void repopulate()
+    {
+        for(int r = 0; r < grid.length; r++)
+        {
+            for(int c = 0; c < grid[0].length; c++)
             {
-                int val = 0;
-                while(val % 10 != 0 || val % 100 == 0)
-                {
-                    val = (int)(Math.random() * MAX + 1);
-                }
-                grid[row][col] = val;
+                int rand = (int) (Math.random() * MAX) + 1;
+                while(rand % 10 != 0 || rand % 100 == 0)
+                    rand = (int) (Math.random() * MAX) + 1;
+
+                grid[r][c] = rand;
             }
         }
-
     }
-
 
     public int countIncreasingCols()
     {
-        int count = 0;
-        for(int col = 0; col < grid[0].length; col++)
-        {
-            int increasing = 1;
-            for(int row = 1; row < grid.length; row++)
-            {
-                if(grid[row][col] >= grid[row-1][col])
-                {
-                    increasing++;
-                }
-                if(increasing == grid.length)
-                {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
+        int increasingCols = 0;
 
-    public String toString()
-    {
-        String s = "";
-        for(int[]row : grid)
+        for(int c = 0; c < grid[0].length; c++)
         {
-            for(int col : row)
-            {
-                s += col + " ";
-            }
-            s += "\n";
+            boolean isIncreasing = true;
+
+            for(int r = 1; r < grid.length; r++)
+                if(grid[r-1][c] > grid[r][c])
+                    isIncreasing = false;
+
+            if(isIncreasing)
+                increasingCols++;
         }
-        return s;
+
+        return increasingCols;
     }
 }
